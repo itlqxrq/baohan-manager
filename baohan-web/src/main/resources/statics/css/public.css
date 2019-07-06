@@ -1,0 +1,13 @@
+html { overflow-x:hidden; }
+.content-header {
+	position: relative;
+	padding: 0 0 3px 8px
+}
+
+.xa-text-center{
+    text-align: center !important;
+}
+
+.xa-width100{
+	width: 100px !important;
+}

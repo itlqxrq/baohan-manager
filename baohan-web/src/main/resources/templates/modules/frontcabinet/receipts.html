@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>收货录用</title>
+    <link rel="stylesheet" href="${request.contextPath}/statics/css/receipts.css">
+    <link rel="stylesheet" href="${request.contextPath}/statics/css/public.css">
+    <link rel="stylesheet" href="${request.contextPath}/statics/css/layui.css">
+    <link rel="stylesheet" href="${request.contextPath}/statics/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="${request.contextPath}/statics/js/public/layui.js"></script>
+    <script src="${request.contextPath}/statics/js/public/public.js"></script>
+</head>
+<body>
+    <div id="rece">
+        <form class="layui-form" action="">
+            <div class="xa-searchPanel layui-form-item">
+                <label class="layui-form-label xa-width100">唛头：</label>
+                <div class="layui-input-block">
+                    <input id="cuscode" type="text" name="title" required lay-verify="title" v-model="cusCode"
+                           placeholder="请输入唛头" autocomplete="off"
+                           class="layui-input bh-input" @blur="greet">
+                </div>
+            </div>
+            <div class="xa-searchPanel layui-form-item">
+                <label class="layui-form-label xa-width100">业务代码：</label>
+                <div class="layui-input-block">
+                    <input id="usercode" type="text" name="title" required lay-verify="title" v-model="userCode"
+                           placeholder="请输入业务名称" autocomplete="off"
+                           class="layui-input bh-input" readonly>
+                </div>
+            </div>
+            <div class="xa-searchPanel layui-form-item">
+                <label class="layui-form-label xa-width100">客户名称：</label>
+                <div class="layui-input-block">
+                    <input id="cusname" type="text" name="title" required lay-verify="title" v-model="cusName"
+                           placeholder="请输入客户名称" autocomplete="off"
+                           class="layui-input bh-input" readonly>
+                </div>
+            </div>
+            <div>
+                <div class="layui-form-item xa-searchPanel">
+                    <label class="layui-form-label  xa-width100">物流来源：</label>
+                    <div class="layui-input-block">
+                        <select id="goods" name="goods" lay-verify="" v-model="cargoSource">
+                            <option value="=请选择=">=请选择=</option>
+                            <option value="物流">物流</option>
+                            <option value="义务">义务</option>
+                            <option value="揭阳">揭阳</option>
+                            <option value="快递">快递</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="xa-searchPanel layui-form-item">
+                    <label class="layui-form-label xa-width100">货物状态：</label>
+                    <div class="layui-input-block" >
+                        <select id=state name="state" lay-verify="" v-model="cargoState">
+                            <option value="完好">完好</option>
+                            <option value="有破损">有破损</option>
+                            <option value="数量不符">数量不符</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="xa-searchPanel layui-form-item">
+                    <label class="layui-form-label xa-width100">货物数量：</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title" required lay-verify="required" v-model="cargoNum"
+                               placeholder="请输入货物数量" autocomplete="off"
+                               class="layui-input bh-input">
+                    </div>
+                </div>
+            </div>
+            <div class="xa-searchPanel layui-form-item">
+                <label class="layui-form-label xa-width100">货物照片：</label>
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn" id="test1">
+                        <i class="layui-icon">&#xe67c;</i>上传图片
+                    </button>
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">备注:</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入备注" class="layui-textarea" name="required" v-model="confirmRemark"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="demo1" @click="receiptsAdd">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+<script src="${request.contextPath}/statics/js/modules/frontcabinet/receipts.js"></script>
+<script>
+    //Demo
+    layui.use(['form','upload'], function () {
+        var form = layui.form;
+        form.render();
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+    layui.use('upload', function () {
+        var upload = layui.upload;
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#test1' //绑定元素
+            , url: '../../sys/oss/upload' //上传接口
+            , done: function (res) {
+                layui.use('layer', function(){
+                    var layer = layui.layer;
+                    if(res.url!=null){
+                        layer.msg('图片上传成功');
+                    }else{
+                        layer.msg('图片上传失败');
+                    }
+                });
+            }
+            , error: function () {
+                //请求异常回调
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hd.modules.sys.dao.SysPostionDao">
+
+    <!-- 职位信息新增 -->
+    <insert id="savePostion" parameterType="com.hd.modules.sys.entity.SysPostionEntity">
+        insert into bh_postion (code,name,dept_id) values
+        (#{code},#{name},#{deptId});
+    </insert>
+
+    <!-- 职位信息删除 -->
+    <delete id="deletePostionById" parameterType="java.lang.Integer">
+        delete from bh_postion where 1=1 and id = #{positionId}
+    </delete>
+    <!-- 修改职位信息 -->
+    <update id="editPostion" parameterType="com.hd.modules.sys.entity.SysPostionEntity">
+        update bh_postion
+        set
+        <if test="code != null and code != ''">
+            code = #{code},
+        </if>
+        <if test="name != null and name != ''">
+            name = #{name},
+        </if>
+        <if test="deptId != null and deptId != ''">
+            dept_id = #{deptId},
+        </if>
+        update_time = NOW()
+        where id = #{id}
+    </update>
+
+    <!-- 根据职位名称查找职位信息 -->
+    <select id="queryPostionByName" parameterType="java.lang.String" resultType="com.hd.modules.sys.entity.SysPostionEntity">
+        select id,code,name,dept_id as deptId from bh_postion where name = #{name};
+    </select>
+
+    <!-- 根据职位编码查找职位信息 -->
+    <select id="queryPostionByCode" parameterType="java.lang.String" resultType="com.hd.modules.sys.entity.SysPostionEntity">
+        select id,code,name,dept_id as deptId from bh_postion where code = #{code};
+    </select>
+
+    <!-- 根据职位编码查找职位信息 -->
+    <select id="queryPostionByDeptId" parameterType="java.lang.Integer" resultType="com.hd.modules.sys.entity.SysPostionEntity">
+        select id,code,name,dept_id as deptId from bh_postion where dept_id = #{deptId};
+    </select>
+
+    <!-- 根据pageIndex查找职位信息 -->
+    <select id="getPostionPage" parameterType="java.lang.Integer" resultType="com.hd.modules.sys.entity.SysPostionEntity">
+        select a.id,a.code,a.name,b.name as deptName from bh_postion a join sys_dept b on a.dept_id = b.dept_id order by a.id desc limit #{start},10 ;
+    </select>
+
+    <!-- 复合查询职位信息 -->
+    <select id="postionSearch" resultType="com.hd.modules.sys.entity.SysPostionEntity">
+        select a.id,a.code,a.name,b.name as deptName from bh_postion a join sys_dept b on a.dept_id = b.dept_id
+         where 1=1
+        <if test="code != null and code != ''">
+            and a.code = #{code}
+        </if>
+        <if test="name != null and name != ''">
+            and a.name = #{name}
+        </if>
+        <if test="deptId != null and deptId != ''">
+            and a.dept_id = #{deptId}
+        </if>
+         order by a.id desc;
+    </select>
+
+</mapper>

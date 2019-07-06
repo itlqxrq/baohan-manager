@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hd.modules.sys.dao.SysAccountDao">
+
+    <!-- 会计科目新增 -->
+    <insert id="accountAdd" parameterType="com.hd.modules.sys.entity.SysAccountEntity">
+        insert into bh_account_subjects (code,name,parent_id,is_open,is_in_profit) values
+        (#{code},#{name},#{parentId},#{isOpen},#{isInProfit});
+    </insert>
+
+    <!-- 会计科目删除 -->
+    <delete id="accountDelById" parameterType="java.lang.Integer">
+        delete from bh_account_subjects where 1=1 and id = #{accountId}
+    </delete>
+    <!-- 修改会计科目 -->
+    <update id="accountEdit" parameterType="com.hd.modules.sys.entity.SysAccountEntity">
+        update bh_account_subjects
+        set
+        <if test="code != null and code != ''">
+            code = #{code},
+        </if>
+        <if test="name != null and name != ''">
+            name = #{name},
+        </if>
+        <if test="parentId != null and parentId != ''">
+            parent_id = #{parentId},
+        </if>
+        <if test="isOpen != null and isOpen != ''">
+            is_open = #{isOpen},
+        </if>
+        <if test="isInProfit != null and isInProfit != ''">
+            is_in_profit = #{isInProfit},
+        </if>
+        update_time = NOW()
+        where id = #{id}
+    </update>
+
+    <!-- 检索会计科目 -->
+    <select id="getPageData" parameterType="java.lang.Integer" resultType="com.hd.modules.sys.entity.SysAccountEntity">
+        select id,code,name,parent_id as parentId,is_open as idOpen,is_in_profit as isInProfit from bh_account_subjects order by parent_id;
+    </select>
+
+    <!-- 复合查询会计科目 -->
+    <select id="accountSec" parameterType="java.lang.String" resultType="com.hd.modules.sys.entity.SysAccountEntity">
+        select id,code,name,parent_id as parentId,(select name from bh_account_subjects where id = parentId) as parentName,is_open as isOpen,is_in_profit as isInProfit from bh_account_subjects
+         where name = #{name}
+    </select>
+
+</mapper>

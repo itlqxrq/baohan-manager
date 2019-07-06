@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>货物列表</title>
+    <link rel="stylesheet" href="${request.contextPath}/statics/css/layui.css">
+    <link rel="stylesheet" href="${request.contextPath}/statics/css/goods.css">
+    <link rel="stylesheet" href="${request.contextPath}/statics/css/public.css">
+    <link rel="stylesheet" href="${request.contextPath}/statics/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="${request.contextPath}/statics/js/public/lay/modules/jquery.js"></script>
+    <script src="${request.contextPath}/statics/js/public/layui.js"></script>
+    <script src="${request.contextPath}/statics/js/public/public.js"></script>
+</head>
+<body>
+<div id="goods" v-cloak>
+    <div v-if="!showEdit">
+        <div>
+            <div class="xa-searchPanelFir">
+                <label class="layui-form-label xa-width100">唛头：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" required lay-verify="required" v-model="cusCode"
+                           placeholder="请输入唛头" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="xa-searchPanel">
+                <label class="layui-form-label xa-width150">业务代码：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" required lay-verify="required" v-model="userCode"
+                           placeholder="请输入业务代码" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline xa-searchPanelForDate">
+                <label class="layui-form-label">收货时间:</label>
+                <div class="layui-input-inline">
+                    <div class="xa-dataPanel">
+                        <input id="startDate" type="date" class="layui-input"/>
+                    </div>
+                    <div class="layui-form-mid" style="margin-left: 1rem;">-</div>
+                    <div class="xa-dataPanel">
+                        <input id="endDate" type="date" class="layui-input"/>
+                    </div>
+                </div>
+            </div>
+            <div class="xa-searchPanelBtn">
+                <button type="button" class="layui-btn" @click="">查询</button>
+            </div>
+        </div>
+        <!-- 数据展示区 -->
+        <div>
+            <table class="layui-table">
+                <colgroup>
+                    <col width="150">
+                    <col width="150">
+                    <col width="150">
+                    <col width="150">
+                    <col width="150">
+                    <col width="150">
+                    <col width="150">
+                    <col width="150">
+                    <col width="200">
+                    <col>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th class="xa-text-center">序号</th>
+                    <th class="xa-text-center">唛头</th>
+                    <th class="xa-text-center">业务代码</th>
+                    <th class="xa-text-center">关联数量</th>
+                    <th class="xa-text-center">确认状态</th>
+                    <th class="xa-text-center">收货时间</th>
+                    <th class="xa-text-center">操作</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="xa-text-center" v-for="goodsItem,index in goodsList" v-if="index < pageCount">
+                    <td>{{index + 1}}</td>
+                    <td>{{goodsItem.cusCode}}</td>
+                    <td>{{goodsItem.userCode}}</td>
+                    <td>{{goodsItem.cargoNum}}</td>
+                    <td>{{goodsItem.cargoState}}</td>
+                    <td>{{goodsItem.createTime}}</td>
+                    <td style="text-align: center">
+                        <div class="xa-deal-btn" @click="postionEdit()">编辑</div>
+                        <div class="xa-deal-btn" @click="postionDel()">删除</div>
+                        <div class="xa-deal-btn" @click="postionEdit()">详情</div>
+                        <div class="xa-deal-btn" @click="postionDel()">催办</div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--        无内容时友情提示-->
+        <div v-if="goodsList.length == 0" class="xa-noData">
+            友情提示，当前查询无可显示内容...
+        </div>
+        <!--        分页区域-->
+        <div id="xaPage"></div>
+    </div>
+</div>
+<script src="${request.contextPath}/statics/js/modules/frontcabinet/goods.js"></script>
+<script>
+    // 分页引入
+    layui.use(['laypage', 'layer', 'form'], function () {
+        var laypage = layui.laypage,
+            form = layui.form,
+            layer = layui.layer;
+        //完整功能
+        laypage.render({
+            elem: 'xaPage'
+            , count: goods.goodsList.length
+            , layout: ['count', 'prev', 'page', 'next', 'limit', 'skip']
+            , jump: function (obj) {
+                goods.pageCount = obj.limit;
+                goods.getIndex++;
+                goods.getGoodsPage(obj.curr, obj.limit)
+            }
+        });
+    });
+</script>
+</body>
+</html>

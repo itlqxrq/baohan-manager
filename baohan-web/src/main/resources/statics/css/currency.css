@@ -1,0 +1,65 @@
+html { overflow-x:hidden; }
+.content-header {
+	position: relative;
+	padding: 0 0 3px 8px
+}
+
+.xa-searchPanel{
+    float: left;
+    width: 23%;
+    margin: 1rem;
+}
+.xa-searchPanelFir{
+    float: left;
+    width: 19%;
+    margin-top: 1rem;
+}
+.xa-searchPanelForDate{
+    width: 35%;
+    float: left;
+    margin-top: 1rem;
+}
+.xa-searchPanelBtn{
+    float: left;
+    margin-left: 2rem;
+    margin-top: 1rem;
+}
+.xa-deal-btn{
+    float: left;
+    margin-left: 2rem;
+    color: dodgerblue;
+}
+
+.xa-width100{
+    width: 100px !important;
+}
+
+.xa-text-center{
+    text-align: center !important;
+}
+
+.layui-form-label{
+    width: 100px !important;
+}
+
+.xa-noData{
+    height: 100px;
+    margin-top: 100px;
+    text-align: center;
+}
+
+.xa-input{
+    width:550px !important;
+}
+.xa-date{
+    width: 550px;
+    height: 38px;
+    border-width: 1px;
+    border-style: solid;
+    background-color: #fff;
+    border-radius: 2px;
+    border-color: #e6e6e6;
+}
+.xa-dataPanel{
+    float: left;
+ }

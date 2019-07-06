@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hd.modules.sys.dao.SysRoyaltyDao">
+
+    <!-- 提成点数新增 -->
+    <insert id="royaltyAdd" parameterType="com.hd.modules.sys.entity.SysRoyaltyEntity">
+        insert into bh_royalty (is_probation,position_id,postion_name,threshold,step_one,step_tow) values
+        (#{isProbation},#{positionId},#{postionName},#{threshold},#{stepOne},#{stepTwo});
+    </insert>
+
+    <!-- 提成点数删除 -->
+    <delete id="royaltyDelById" parameterType="java.lang.Integer">
+        delete from bh_royalty where 1=1 and id = #{royaltyId}
+    </delete>
+    <!-- 修改提成点数 -->
+    <update id="royaltyEdit" parameterType="com.hd.modules.sys.entity.SysRoyaltyEntity">
+        update bh_royalty
+        set
+        <if test="isProbation != null and isProbation != ''">
+            is_probation = #{isProbation},
+        </if>
+        <if test="positionId != null and positionId != ''">
+            position_id = #{positionId},
+        </if>
+        <if test="postionName != null and postionName != ''">
+            postion_name = #{postionName},
+        </if>
+        <if test="threshold != null and threshold != ''">
+            threshold = #{threshold},
+        </if>
+        <if test="stepOne != null and stepOne != ''">
+            step_one = #{stepOne},
+        </if>
+        <if test="stepTwo != null and stepTwo != ''">
+            step_tow = #{stepTwo},
+        </if>
+        update_time = NOW()
+        where id = #{id}
+    </update>
+
+    <!-- 根据pageIndex查找提成点数 -->
+    <select id="getPageData" parameterType="java.lang.Integer" resultType="com.hd.modules.sys.entity.SysRoyaltyEntity">
+        select id,is_probation as isProbation,position_id as positionId,postion_name as postionName,threshold,step_one as stepOne,step_tow as stepTwo from bh_royalty order by id desc limit #{start},#{limit} ;
+    </select>
+
+    <!-- 复合查询提成点数 -->
+    <select id="royaltySec" resultType="com.hd.modules.sys.entity.SysRoyaltyEntity">
+        select id,is_probation,position_id,postion_name,threshold,step_one,step_tow from bh_royalty
+         where 1=1
+        <if test="isProbation != null and isProbation != ''">
+            and is_probation = #{isProbation}
+        </if>
+        <if test="positionId != null and positionId != ''">
+            and position_id = #{positionId}
+        </if>
+        <if test="postionName != null and postionName != ''">
+            and postion_name = #{postionName}
+        </if>
+        <if test="threshold != null and threshold != '' and threshold > 0">
+            and threshold = #{threshold}
+        </if>
+        <if test="stepOne != null and stepOne != '' and stepOne > 0">
+            and step_one = #{stepOne}
+        </if>
+        <if test="stepTwo != null and stepTwo != '' and stepTwo > 0">
+            and step_tow = #{stepTwo}
+        </if>
+         order by id desc;
+    </select>
+
+</mapper>

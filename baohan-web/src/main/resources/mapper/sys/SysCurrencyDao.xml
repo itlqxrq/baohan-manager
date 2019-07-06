@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hd.modules.sys.dao.SysCurrencyDao">
+
+    <!-- 币别资料新增 -->
+    <insert id="currencyAdd" parameterType="com.hd.modules.sys.entity.SysCurrencyEntity">
+        insert into bh_currency (month,name,name_en,rmb_exchange_rate,usd_exchange_rate,hkd_exchange_rate,effect_date) values
+        (#{month},#{name},#{nameEn},#{rmbExchangeRate},#{usdExchangeRate},#{hkdExchangeRate},#{effectDate});
+    </insert>
+
+    <!-- 币别资料删除 -->
+    <delete id="currencyDelById" parameterType="java.lang.Integer">
+        delete from bh_currency where 1=1 and id = #{currencyId}
+    </delete>
+    <!-- 修改币别资料 -->
+    <update id="currencyEdit" parameterType="com.hd.modules.sys.entity.SysCurrencyEntity">
+        update bh_currency
+        set
+        <if test="name != null and name != ''">
+            name = #{name},
+        </if>
+        <if test="month != null and month != ''">
+            month = #{month},
+        </if>
+        <if test="nameEn != null and nameEn != ''">
+            name_en = #{nameEn},
+        </if>
+        <if test="rmbExchangeRate != null and rmbExchangeRate != ''">
+            rmb_exchange_rate = #{rmbExchangeRate},
+        </if>
+        <if test="usdExchangeRate != null and usdExchangeRate != ''">
+            usd_exchange_rate = #{usdExchangeRate},
+        </if>
+        <if test="hkdExchangeRate != null and hkdExchangeRate != ''">
+            hkd_exchange_rate = #{hkdExchangeRate},
+        </if>
+        <if test="effectDate != null and effectDate != ''">
+            effect_date = #{effectDate},
+        </if>
+        update_time = NOW()
+        where id = #{id}
+    </update>
+
+    <!-- 根据pageIndex查找币别资料 -->
+    <select id="getPageData" parameterType="java.lang.Integer" resultType="com.hd.modules.sys.entity.SysCurrencyEntity">
+        select id,month,name,name_en as nameEn,rmb_exchange_rate as rmbExchangeRate,usd_exchange_rate as usdExchangeRate,hkd_exchange_rate as hkdExchangeRate,
+            effect_date as effectDate from bh_currency order by id desc limit #{start},#{limit} ;
+    </select>
+
+    <!-- 复合查询币别资料 -->
+    <select id="currencySec" resultType="com.hd.modules.sys.entity.SysCurrencyEntity">
+        select id,month,name,name_en as nameEn,rmb_exchange_rate as rmbExchangeRate,usd_exchange_rate as usdExchangeRate,hkd_exchange_rate as hkdExchangeRate,
+            effect_date as effectDate from bh_currency
+         where 1=1
+        <if test="name != null and name != ''">
+            and name = #{name}
+        </if>
+        <if test="nameEn != null and nameEn != ''">
+            and name_en = #{nameEn}
+        </if>
+         order by id desc;
+    </select>
+
+    <!-- 复合查询币别历史资料 -->
+    <select id="currencySecForHistyor" resultType="com.hd.modules.sys.entity.SysCurrencyEntity">
+        select id,month,name,name_en as nameEn,rmb_exchange_rate as rmbExchangeRate,usd_exchange_rate as usdExchangeRate,hkd_exchange_rate as hkdExchangeRate,
+        effect_date as effectDate from bh_currency
+        where 1=1
+        <if test="name != null and name != ''">
+            and name = #{name}
+        </if>
+        <if test="nameEn != null and nameEn != ''">
+            and name_en = #{nameEn}
+        </if>
+        <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+            and effect_date between #{startDate} and #{endDate}
+        </if>
+        order by id desc;
+    </select>
+
+</mapper>

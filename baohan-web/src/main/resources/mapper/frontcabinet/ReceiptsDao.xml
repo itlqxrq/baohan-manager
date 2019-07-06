@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.modules.frontcabinet.dao.ReceiptsDao">
+
+    <!--根据客户的唛头查出客户的名称和业务代码-->
+    <select id="queryCustomerByName" parameterType="java.lang.String" resultType="com.hd.modules.frontcabinet.entity.Customer">
+        select cus_name as cusName,user_code as userCode from bh_customer where cus_code=#{cuscode};
+    </select>
+
+    <!-- 保存收货录用订单-->
+    <insert id="saveManIfest" parameterType="com.hd.modules.frontcabinet.entity.ManIfest">
+        insert into bh_manifest(cus_code,user_code,cus_name,cargo_source,cargo_state,cargo_num,confirm_remark)
+        values(#{cusCode},#{userCode},#{cusName},#{cargoSource},#{cargoState},#{cargoNum},#{confirmRemark});
+    </insert>
+
+   <!--根据pageIndex查找货物信息-->
+    <select id="getGoodsPage" parameterType="java.lang.Integer" resultType="com.hd.modules.frontcabinet.entity.ManIfest">
+        select id,cus_code as cusCode,user_code as userCode,cargo_num as cargoNum,cargo_state as cargoState,
+        create_time as createTime from  bh_manifest order by id desc limit #{start},#{limit} ;
+    </select>
+
+</mapper>
+

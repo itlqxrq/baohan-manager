@@ -1,0 +1,55 @@
+html { overflow-x:hidden; }
+.content-header {
+	position: relative;
+	padding: 0 0 3px 8px
+}
+
+.xa-searchPanel{
+    float: left;
+    width: 23%;
+}
+.xa-searchPanelFir{
+    float: left;
+    width: 30%;
+}
+.xa-searchPanelBtn{
+    float: left;
+    width: 20%;
+    margin-left: 2rem;
+}
+.xa-deal-btn{
+    float: left;
+    margin-left: 2rem;
+    color: dodgerblue;
+}
+
+.xa-width100{
+    width: 100px !important;
+}
+
+.xa-text-center{
+    text-align: center !important;
+}
+
+.layui-form-label{
+    width: 150px !important;
+}
+
+.xa-noData{
+    height: 100px;
+    margin-top: 100px;
+    text-align: center;
+}
+
+.xa-input{
+    width:500px !important;
+}
+.xa-inputForSec{
+    width: 75% !important;
+}
+.xa-treePanel{
+    width: 300px;
+    height: 600px;
+    overflow: scroll;
+    margin-left: 5rem;
+}
